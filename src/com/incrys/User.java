@@ -2,20 +2,21 @@ package com.incrys;
 
 import java.util.Date;
 
-/**
- * Created by User on 7/10/2017.
- */
 public class User {
     private String username;
     private Date dateOfBirth;
     private String email;
     private String password;
+    private String confirmedPassword;
+    private String secretCode;
 
-    public User(String username, Date dateOfBirth, String email, String passwordHash) {
+    public User(String username, Date dateOfBirth, String email, String password, String confirmedPassword, String secretCode) {
         this.username = username;
         this.dateOfBirth = dateOfBirth;
         this.email = email;
-        this.password = passwordHash;
+        this.password = password;
+        this.confirmedPassword=confirmedPassword;
+        this.secretCode = secretCode;
     }
 
     public String getUsername() {
@@ -49,4 +50,32 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getConfirmedPassword() {
+        return confirmedPassword;
+    }
+
+    public void setConfirmedPassword(String confirmedPassword) {
+        this.confirmedPassword = confirmedPassword;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", dateOfBirth='" + dateOfBirth + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", confirmedPassword='" + confirmedPassword + '\'' +
+                ", secretCode='" + secretCode + '\'' +
+                '}';
+    }
+
+    public boolean validateUsername(){
+        boolean isValid = true;
+        if(this.username.length()>100) isValid=false;
+        if(this.username.length()==0) isValid=false;
+        return isValid;
+    }
+
 }

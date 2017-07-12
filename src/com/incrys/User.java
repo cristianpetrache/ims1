@@ -12,6 +12,12 @@ import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.Properties;
 import java.util.StringJoiner;
@@ -144,6 +150,20 @@ public class User {
             message.add("Email invalid.");
             return false;
         }
+
+        Connection connection = JDBConnectionFactory.getConnection();
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * from t1database.users WHERE email= '" + this.email +"'");
+            if(resultSet.next()) {
+                message.add("Email already registered.");
+                connection.close();
+                return false;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return true;
     }
 
@@ -153,7 +173,11 @@ public class User {
         if(!this.validateBirthDate()) isValid=false;
         if(!this.validatePassword()) isValid=false;
         if(!this.validateEmail()) isValid=false;
-        if(!this.validateSecretCode()) isValid=false;
+        if(isValid) {
+            if(!this.validateSecretCode()) {
+                isValid = false;
+            }
+        }
         return isValid;
     }
 
@@ -176,12 +200,15 @@ public class User {
 
         httpCon.connect();
         System.out.println(format);
-        System.out.println(httpCon.getResponseCode());
-        System.out.println(httpCon.getResponseMessage());
 
-        httpCon.disconnect();
-
-        return true;
+        if (httpCon.getResponseCode()==200) {
+            httpCon.disconnect();
+            return true;
+        } else {
+            httpCon.disconnect();
+            message.add("Wrong code.");
+            return false;
+        }
     }
 
     public void sendEmail() {
@@ -217,6 +244,36 @@ public class User {
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public String hashPassword(String pwd) {
+        String generatedPassword = null;
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.update(pwd.getBytes());
+            byte[] bytes = messageDigest.digest();
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i=0;i< bytes.length;i++) {
+                stringBuilder.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
+            }
+            generatedPassword = stringBuilder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return generatedPassword;
+    }
+
+    public void addToDatabase(){
+        Connection connection = JDBConnectionFactory.getConnection();
+        Statement statement= null;
+        try {
+            statement = connection.createStatement();
+            statement.executeUpdate("INSERT INTO t1database.users VALUES (0,'"+this.username +
+                    "','"+java.sql.Date.valueOf(this.dateOfBirth)+"','"+this.email+"','"+this.hashPassword(this.password)+"',0)");
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

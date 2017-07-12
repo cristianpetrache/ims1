@@ -8,8 +8,8 @@ import java.sql.SQLException;
  * Created by User on 7/10/2017.
  */
 public class JDBConnectionFactory {
-    public static final String JDBC_URL = "jdbc:mysql://localhost:3306/testing";
-    public static final String JDBC_USER="root";
+    public static final String JDBC_URL = "jdbc:mysql://192.168.1.195:3306/t1database";
+    public static final String JDBC_USER="voinic";
     public static final String JDBC_PWD="1234";
 
     static {

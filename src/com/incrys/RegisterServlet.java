@@ -6,6 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -33,13 +37,15 @@ public class RegisterServlet extends HttpServlet {
         User user = new User(username,birthDate,email,password,confirmedPassword,secretCode);
 
         PrintWriter printWriter = resp.getWriter();
-        printWriter.append(user.toString());
+        printWriter.append(user.toString()+"\n");
         if(user.validateUser()) {
             printWriter.append("SUCCESS");
+            user.addToDatabase();
         }
         else{
             printWriter.append("\n\n"+user.message);
         }
-        //user.sendEmail();
+
+
     }
 }

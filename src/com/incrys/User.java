@@ -1,7 +1,19 @@
 package com.incrys;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.Properties;
 import java.util.StringJoiner;
 
 public class User {
@@ -135,13 +147,76 @@ public class User {
         return true;
     }
 
-    public boolean validateUser(){
+    public boolean validateUser() throws IOException {
         boolean isValid=true;
         if(!this.validateUsername()) isValid=false;
         if(!this.validateBirthDate()) isValid=false;
         if(!this.validatePassword()) isValid=false;
         if(!this.validateEmail()) isValid=false;
+        if(!this.validateSecretCode()) isValid=false;
         return isValid;
     }
 
+    public boolean validateSecretCode() throws IOException {
+        URL url = new URL("https://validate.mybluemix.net/token");
+        HttpURLConnection httpCon = (HttpURLConnection) url.openConnection();
+
+        httpCon.setUseCaches(false);
+        httpCon.setDefaultUseCaches(false);
+
+        httpCon.setDoOutput(true);
+        httpCon.setRequestMethod("PUT");
+
+        httpCon.setRequestProperty("Content-Type", "application/json");
+        OutputStreamWriter out = new OutputStreamWriter(httpCon.getOutputStream());
+        String format = String.format("{\"token\":\"%s\"}", this.secretCode);
+
+        out.write(format);
+        out.close();
+
+        httpCon.connect();
+        System.out.println(format);
+        System.out.println(httpCon.getResponseCode());
+        System.out.println(httpCon.getResponseMessage());
+
+        httpCon.disconnect();
+
+        return true;
+    }
+
+    public void sendEmail() {
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
+                        return new javax.mail.PasswordAuthentication("teamoneims1@gmail.com","1234567890aA");
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("teamoneims1@gmail.com"));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse("paltineanu13@gmail.com"));
+            message.setSubject("Testing Subject");
+            message.setText("Hello," + this.username +
+                    "\n\n Click the following link to confirm your e-mail address : " +
+                    "muie" );
+
+            Transport.send(message);
+
+            System.out.println("Done");
+
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

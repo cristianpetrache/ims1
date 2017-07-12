@@ -40,5 +40,6 @@ public class RegisterServlet extends HttpServlet {
         else{
             printWriter.append("\n\n"+user.message);
         }
+        //user.sendEmail();
     }
 }

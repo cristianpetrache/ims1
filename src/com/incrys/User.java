@@ -21,6 +21,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.Properties;
 import java.util.StringJoiner;
+import java.util.UUID;
 
 public class User {
     private String username;
@@ -211,7 +212,7 @@ public class User {
         }
     }
 
-    public void sendEmail() {
+    public void sendEmail() throws SQLException {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.socketFactory.port", "465");
@@ -228,6 +229,17 @@ public class User {
                 });
 
         try {
+            Connection connection = JDBConnectionFactory.getConnection();
+            Statement statement= null;
+            statement = connection.createStatement();
+
+            ResultSet resultSet = statement.executeQuery("SELECT * from t1database.users where email = '" + this.email + "'");
+
+            resultSet.next();
+            String id = String.valueOf(resultSet.getInt(1));
+            String confirmationLink = "http://localhost:8080/activation?id=" +
+                        id;
+            connection.close();
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("teamoneims1@gmail.com"));
@@ -236,11 +248,11 @@ public class User {
             message.setSubject("Testing Subject");
             message.setText("Hello," + this.username +
                     "\n\n Click the following link to confirm your e-mail address : " +
-                    "muie" );
+                    confirmationLink);
 
             Transport.send(message);
 
-            System.out.println("Done");
+            System.out.println("Confirmation e-mail sent.");
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);

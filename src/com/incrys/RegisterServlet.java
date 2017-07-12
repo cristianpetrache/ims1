@@ -41,11 +41,16 @@ public class RegisterServlet extends HttpServlet {
         if(user.validateUser()) {
             printWriter.append("SUCCESS");
             user.addToDatabase();
+            try {
+                user.sendEmail();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-        else{
+        else
+        {
             printWriter.append("\n\n"+user.message);
         }
-
 
     }
 }

@@ -19,6 +19,14 @@
         <servlet-name>JsonRegister</servlet-name>
         <url-pattern>/jsonRegister</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>Activation</servlet-name>
+        <servlet-class>com.incrys.ActivationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Activation</servlet-name>
+        <url-pattern>/activation</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

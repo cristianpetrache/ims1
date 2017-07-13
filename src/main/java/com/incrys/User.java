@@ -14,10 +14,7 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDate;
 import java.util.Properties;
 import java.util.StringJoiner;
@@ -237,17 +234,16 @@ public class User {
 
             resultSet.next();
             String id = String.valueOf(resultSet.getInt(1));
-            String confirmationLink = "http://localhost:8080/activation?id=" +
-                        id;
+            String confirmationLink = "http://localhost:8080/activation?id=" + id;
             connection.close();
 
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("teamoneims1@gmail.com"));
             message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse("paltineanu13@gmail.com"));
-            message.setSubject("Testing Subject");
+                    InternetAddress.parse(this.email));
+            message.setSubject("Confirmation e-mail");
             message.setText("Hello," + this.username +
-                    "\n\n Click the following link to confirm your e-mail address : " +
+                    "\n\n\n Click the following link to confirm your e-mail address : " +
                     confirmationLink);
 
             Transport.send(message);
@@ -278,11 +274,11 @@ public class User {
 
     public void addToDatabase(){
         Connection connection = JDBConnectionFactory.getConnection();
-        Statement statement= null;
+        PreparedStatement statement= null;
         try {
-            statement = connection.createStatement();
-            statement.executeUpdate("INSERT INTO t1database.users VALUES (0,'"+this.username +
-                    "','"+java.sql.Date.valueOf(this.dateOfBirth)+"','"+this.email+"','"+this.hashPassword(this.password)+"',0)");
+            statement = connection.prepareStatement("INSERT INTO t1database.users VALUES (0,'"+this.username +
+                    "','"+java.sql.Date.valueOf(this.dateOfBirth)+"','"+this.email+"','"+this.hashPassword(this.password)+"','"+ this.secretCode+"',0)");
+            statement.executeUpdate();
             connection.close();
         } catch (SQLException e) {
             e.printStackTrace();

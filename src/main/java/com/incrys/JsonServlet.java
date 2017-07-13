@@ -52,6 +52,7 @@ public class JsonServlet extends HttpServlet {
             if(user.validateUser()) {
                 printWriter.append("SUCCESS");
                 user.addToDatabase();
+                user.sendEmail();
             }
             else{
                 printWriter.append("\n\n"+user.message);

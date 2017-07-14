@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
                 } else {
                         int attempts = (Integer) httpSession.getAttribute("loginAttempts");
                         httpSession.setAttribute("loginAttempts",attempts+1);
-
+                        resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
                         printWriter.append("Invalid credentials.");
                         printWriter.append("\nLogin attempts: ");
                         printWriter.append(httpSession.getAttribute("loginAttempts").toString());

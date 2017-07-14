@@ -255,7 +255,7 @@ public class User {
         }
     }
 
-    public String hashPassword(String pwd) {
+    public static String hashPassword(String pwd) {
         String generatedPassword = null;
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("MD5");
@@ -283,5 +283,21 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public static boolean authenticate(String email,String password) {
+        String hashedPassword = hashPassword(password);
+        Connection connection = JDBConnectionFactory.getConnection();
+        boolean isValid=false;
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM t1database.users WHERE email='"+email+
+                    "' AND password_hash='"+hashedPassword+"' AND verified=1");
+            if(resultSet.next()) isValid = true;
+            else isValid = false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return isValid;
     }
 }

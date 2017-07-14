@@ -28,7 +28,6 @@ public class JDBConnectionFactory {
             JDBC_URL=properties.getProperty("JDBC_URL");
             JDBC_USER=properties.getProperty("JDBC_USER");
             JDBC_PWD=properties.getProperty("JDBC_PWD");
-            System.out.println("Connected to "+JDBC_URL);
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

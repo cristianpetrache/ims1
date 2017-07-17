@@ -61,6 +61,7 @@ public class JsonServlet extends HttpServlet {
         } catch (Exception e) {
             e.printStackTrace();
             printWriter.append(e.getMessage());
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
 
     }

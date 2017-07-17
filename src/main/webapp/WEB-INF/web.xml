@@ -6,6 +6,7 @@
     <servlet>
         <servlet-name>Register</servlet-name>
         <servlet-class>com.incrys.RegisterServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Register</servlet-name>
@@ -14,6 +15,7 @@
     <servlet>
         <servlet-name>JsonRegister</servlet-name>
         <servlet-class>com.incrys.JsonServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>JsonRegister</servlet-name>
@@ -22,6 +24,7 @@
     <servlet>
         <servlet-name>Activation</servlet-name>
         <servlet-class>com.incrys.ActivationServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Activation</servlet-name>
@@ -30,6 +33,7 @@
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>com.incrys.LoginServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
@@ -38,6 +42,7 @@
     <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>com.incrys.LogoutServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>

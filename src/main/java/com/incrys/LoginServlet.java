@@ -78,6 +78,7 @@ public class LoginServlet extends HttpServlet {
                         httpSession.setAttribute("loginTimeout",timeout);
                 }
             } else {
+                resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 printWriter.append("Too many attempts. Locked out.");
                 Date timeout = (Date) httpSession.getAttribute("loginTimeout");
                 long diff = timeout.getTime() - (new Date().getTime());

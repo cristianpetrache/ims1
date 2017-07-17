@@ -105,6 +105,11 @@ public class User {
             message.add("Username is null.");
             return isValid;
         }
+        if(!this.username.matches("^[a-zA-Z0-9_-]+( [a-zA-Z0-9_-]+)*$")) {
+            isValid = false;
+            message.add("Username contains invalid characters");
+            return isValid;
+        }
         return isValid;
     }
 

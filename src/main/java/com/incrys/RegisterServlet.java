@@ -1,5 +1,7 @@
 package com.incrys;
 
+import org.json.HTTP;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +52,7 @@ public class RegisterServlet extends HttpServlet {
         else
         {
             printWriter.append("\n\n"+user.message);
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
 
     }

@@ -56,6 +56,7 @@ public class JsonServlet extends HttpServlet {
             }
             else{
                 printWriter.append("\n\n"+user.message);
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
         } catch (Exception e) {
             e.printStackTrace();

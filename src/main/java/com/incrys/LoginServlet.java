@@ -33,8 +33,8 @@ public class LoginServlet extends HttpServlet {
 
         Properties properties = new Properties();
 
-        InputStream inputStream = new FileInputStream("session.properties");
-        properties.load(inputStream);
+        //InputStream inputStream = new FileInputStream("session.properties");
+        properties.load(LogoutServlet.class.getResourceAsStream("/session.properties"));
         int LOGIN_LOCK = Integer.parseInt(properties.getProperty("LOGIN_LOCK"));
         int SESSION_TIMEOUT = Integer.parseInt(properties.getProperty("SESSION_TIMEOUT"));
 

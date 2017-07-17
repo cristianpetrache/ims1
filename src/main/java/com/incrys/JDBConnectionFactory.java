@@ -22,8 +22,8 @@ public class JDBConnectionFactory {
         InputStream inputStream = null;
 
         try {
-            inputStream = new FileInputStream("db.properties");
-            properties.load(inputStream);
+            //inputStream = new FileInputStream("db.properties");
+            properties.load(JDBConnectionFactory.class.getResourceAsStream("/db.properties"));
 
             JDBC_URL=properties.getProperty("JDBC_URL");
             JDBC_USER=properties.getProperty("JDBC_USER");

@@ -48,6 +48,14 @@
         <servlet-name>Logout</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>Change Credentials</servlet-name>
+        <servlet-class>com.incrys.CredentialsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Change Credentials</servlet-name>
+        <url-pattern>/changeCredentials</url-pattern>
+    </servlet-mapping>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

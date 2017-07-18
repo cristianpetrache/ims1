@@ -6,6 +6,7 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.swing.plaf.nimbus.State;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -313,5 +314,38 @@ public class User {
             e.printStackTrace();
         }
         return isValid;
+    }
+
+    public void updateCredentials() throws SQLException {
+        Connection connection = JDBConnectionFactory.getConnection();
+        if(this.username!=null) {
+            if (this.validateUsername()) {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("UPDATE t1database.users " +
+                        "SET display_name='" + this.username + "'" +
+                        "WHERE email='" + this.email + "'");
+                message.add("Updated username.");
+            }
+        }
+        if(this.password!=null) {
+            if(this.validatePassword()) {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("UPDATE t1database.users " +
+                        "SET password_hash='" + this.hashPassword(this.password) + "' " +
+                        "WHERE email='" + this.email + "'");
+                message.add("Updated password.");
+            }
+        }
+
+        if(this.dateOfBirth!=null) {
+            if(this.validateBirthDate()) {
+                Statement statement = connection.createStatement();
+                statement.executeUpdate("UPDATE t1database.users " +
+                        "SET date_of_birth='" + java.sql.Date.valueOf(this.dateOfBirth) + "' " +
+                        "WHERE email='" + this.email + "'");
+                message.add("Updated birthday.");
+            }
+        }
+
     }
 }

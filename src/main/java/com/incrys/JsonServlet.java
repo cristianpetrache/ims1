@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
@@ -58,10 +59,14 @@ public class JsonServlet extends HttpServlet {
                 printWriter.append("\n\n"+user.message);
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
-        } catch (Exception e) {
+        } catch (JSONException e) {
             e.printStackTrace();
             printWriter.append(e.getMessage());
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (DateTimeParseException e) {
+            printWriter.append("Invalid date " + e.getParsedString() + ". Format is yyyy-mm-dd.\n");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }

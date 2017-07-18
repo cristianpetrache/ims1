@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 /**
  * Created by User on 7/18/2017.
@@ -50,6 +51,8 @@ public class CredentialsServlet extends HttpServlet {
                 String date = jsonObject.getString("birthDate");
                 birthDate = LocalDate.parse(date);
             } catch (JSONException e) {
+            } catch (DateTimeParseException e) {
+                printWriter.append("Invalid date " + e.getParsedString() + ". Format is yyyy-mm-dd.\n");
             }
 
             User user = new User(username,birthDate,(String) httpSession.getAttribute("email"),password,password,null);

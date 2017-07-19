@@ -249,7 +249,7 @@ public class User {
 
             resultSet.next();
             String id = String.valueOf(resultSet.getInt(1));
-            String confirmationLink = "http://192.168.1.60:8080/IMS2.8/activation?id=" + id;
+            String confirmationLink = "http://192.168.1.60:8080/IMS3.0/activation?id=" + id;
             connection.close();
 
             Message message = new MimeMessage(session);
@@ -346,6 +346,5 @@ public class User {
                 message.add("Updated birthday.");
             }
         }
-
     }
 }

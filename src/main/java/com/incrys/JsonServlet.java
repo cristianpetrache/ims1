@@ -55,7 +55,7 @@ public class JsonServlet extends HttpServlet {
                 user.addToDatabase();
                 user.sendEmail();
             }
-            else{
+            else {
                 printWriter.append("\n\n"+user.message);
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             }
@@ -68,6 +68,5 @@ public class JsonServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
     }
 }

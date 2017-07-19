@@ -120,14 +120,10 @@ public class User {
             isValid = false;
             message.add("Must be older than 18.");
         }
-        if (dateOfBirth == null) {
-            isValid = false;
-            message.add("Date cannot be empty");
-        }
         return isValid;
     }
 
-    private boolean validatePassword(){
+    private boolean validatePassword() {
         boolean isValid=true;
         if(!this.password.equals(this.confirmedPassword)) {
             isValid=false;
@@ -152,14 +148,14 @@ public class User {
         return isValid;
     }
 
-    private boolean validateEmail(){
+    private boolean validateEmail() {
         if(!this.email.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"" +
                 "(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[" +
                 "\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0" +
                 "-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|" +
                 "[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-" +
                 "]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\" +
-                "\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")){
+                "\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")) {
             message.add("Email invalid.");
             return false;
         }
@@ -176,7 +172,6 @@ public class User {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return true;
     }
 
@@ -249,7 +244,7 @@ public class User {
 
             resultSet.next();
             String id = String.valueOf(resultSet.getInt(1));
-            String confirmationLink = "http://localhost:8080/activation?id=" + id;
+            String confirmationLink = "http://192.168.1.60:8080/IMS2.8/activation?id=" + id;
             connection.close();
 
             Message message = new MimeMessage(session);
@@ -287,7 +282,7 @@ public class User {
         return generatedPassword;
     }
 
-    public void addToDatabase(){
+    public void addToDatabase() {
         Connection connection = JDBConnectionFactory.getConnection();
         PreparedStatement statement= null;
         try {

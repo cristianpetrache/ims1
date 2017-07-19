@@ -18,6 +18,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.temporal.ChronoField;
 import java.util.*;
 
@@ -119,6 +120,10 @@ public class User {
         if (dateOfBirth.isAfter(LocalDate.now().minusYears(18))) {
             isValid = false;
             message.add("Must be older than 18.");
+        }
+        if (dateOfBirth.isBefore(LocalDate.of(1900, 01, 01))) {
+            isValid = false;
+            message.add("You're too old to have an account.");
         }
         return isValid;
     }
